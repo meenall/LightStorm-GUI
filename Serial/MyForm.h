@@ -249,6 +249,7 @@ namespace Serial {
 
 	private: System::Void comboBox1_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e) {
 	}
+	//INIT
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->textBox1->Text = String::Empty;
 		if (this->comboBox1->Text == String::Empty || this->comboBox2->Text == String::Empty)
@@ -271,17 +272,20 @@ namespace Serial {
 		}
 	}
 
+	//WRITE
 	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
 		String^ name = this->serialPort1->PortName;
 		String^ message = this->textBox2->Text;
 		if (this->serialPort1->IsOpen) {
 			this->serialPort1->WriteLine(message);
+			this->textBox2->Text = "Sent.";
 		}
 		else {
 			this->textBox1->Text = "Port Not Open.";
 		}
 	}
 
+	//CLOSE
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 		this->serialPort1->Close();
 		this->progressBar1->Value = 0;
@@ -289,11 +293,12 @@ namespace Serial {
 		this->button1->Enabled = true;
 	}
 
+	//READ
 	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
 		if (this->serialPort1->IsOpen) {
 			this->textBox1->Text = String::Empty;
 			try {
-				this->textBox1->Text = this->serialPort1->ReadExisting();
+				this->textBox1->Text = this->serialPort1->ReadLine();
 			}
 			catch(TimeoutException^) {
 				this->textBox2->Text = "Timeout Exception";
